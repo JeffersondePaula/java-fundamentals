@@ -2,7 +2,7 @@ public class Main {
         public static void main(String[] args) {
             // 1. Declarando as variaveis (Criando os containers)
             String productName = "Ajinomoto MSG Pack";
-            int quantity = 500;
+            int quantity = 5000;
             double weightPerUnit = 0.5; // Em Java usamos PONTO, não virgula
 
             // 2. Processamento (Cálculo simples)
@@ -23,6 +23,15 @@ public class Main {
             } else {
                 System.out.println("STATUS: Stock levels are normal.");
             }
+            System.out.println("\n--- Starting Automatic Audit ---");
+
+            // O Robô de Auditoria
+            // for (INICIO; CONDIÇÃO DE PARADA; PASSO)
+            for (int i = 1; i <= 5; i++) {
+                System.out.println("Scanning Pallet ID: #" + i + " [OK]");
+            }
+
+            System.out.println("Audit Finished.");
 
         }
 }
