@@ -1,22 +1,58 @@
+
 public class Main {
+
     public static void main(String[] args) {
+        // 1. Ferramentas (Scanner e Lista)
+        // System.in = Teclado
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        java.util.List<Product> warehouse = new java.util.ArrayList<>();
 
-        System.out.println("--- System Initialization ---");
+        System.out.println("--- SYSTEM ONLINE: WAITING FOR INPUT ---");
 
-        // INSTANCIAÇÃO (Fabricação)
-        // Tipo | NomeVariável = Comando | Molde(Dados Iniciais)
-        Product p1 = new Product("Ajinomoto MSG", 10.50, 5000);
+        // 2. O Loop Infinito (O Menu)
+        while (true) {
+            System.out.println("\nOptions: [1] Register Product  [2] Finish & Print Report");
+            System.out.print("Choose an option: ");
 
-        // Vamos tentar ver o que criamos?
-        // Cenário 1: O Gerente quer saber SÓ o nome e o preço.
-        System.out.println("Product: " + p1.getName());
-        System.out.println("Price: R$ " + p1.getPrice());
+            int option = scanner.nextInt();
+            scanner.nextLine(); // <--- O TRUQUE DO FANTASMA (Limpa o "Enter" que sobrou na memória)
 
-// Cenário 2: Chegou uma nota fiscal nova. O preço subiu.
-// Não podemos fazer p1.price = 12.00 (Proibido/Private)
-// Usamos o Setter:
-        p1.setPrice(-50.00);
+            if (option == 2) {
+                break; // QUEBRA O LOOP. Sai do while e vai para o relatório.
+            }
 
-        System.out.println("New Price Updated: R$ " + p1.getPrice());
+            if (option == 1) {
+                // Coletando dados reais do usuário
+                System.out.print("Product Name: ");
+                String name = scanner.nextLine(); // Lê a linha inteira (aceita espaços)
+
+                System.out.print("Price (use comma or dot depending on PC): ");
+                double price = scanner.nextDouble();
+
+                System.out.print("Quantity: ");
+                int quantity = scanner.nextInt();
+
+                // Criando e adicionando
+                Product newProduct = new Product(name, price, quantity);
+                warehouse.add(newProduct);
+
+                System.out.println(" >> Product registered successfully!");
+            }
+        }
+
+        // 3. O Relatório Final (Sua tabela bonita)
+        System.out.println("\n--- FINAL INVENTORY REPORT ---");
+        System.out.printf("%-30s | %-10s | %-10s%n", "PRODUCT NAME", "PRICE", "STOCK");
+        System.out.println("----------------------------------------------------------------");
+
+        for (Product p : warehouse) {
+            System.out.printf("%-30s | R$ %-7.2f | %-5d units", p.getName(), p.getPrice(), p.getQuantityInStock());
+            if (p.getQuantityInStock() < 500) {
+                System.out.print("  <-- [LOW STOCK WARNING]");
+            }
+            System.out.println();
+        }
+
+        scanner.close(); // Boa prática: fechar o scanner no fim
     }
 }
