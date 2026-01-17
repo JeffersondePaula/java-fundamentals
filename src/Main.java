@@ -1,46 +1,22 @@
 public class Main {
-    // --- O GERENTE (Fluxo Principal) ---
     public static void main(String[] args) {
-        // 1. Declarando as variaveis (Criando os containers)
-        String productName = "Ajinomoto MSG Pack";
-        int quantity = 5000;
-        double weightPerUnit = 0.5; // Em Java usamos PONTO, não virgula
 
-        // 2. Processamento (Cálculo simples)
-        double totalWeigth = quantity * weightPerUnit;
+        System.out.println("--- System Initialization ---");
 
-        // 3. Saída (Mostrando no painel)
-        System.out.println("Product: " + productName);
-        System.out.println("Total Batch Weight: " + totalWeigth + " kg");
+        // INSTANCIAÇÃO (Fabricação)
+        // Tipo | NomeVariável = Comando | Molde(Dados Iniciais)
+        Product p1 = new Product("Ajinomoto MSG", 10.50, 5000);
 
-        // NOVO: Definindo o limite de segurança
-        int minimumStock = 2000;
+        // Vamos tentar ver o que criamos?
+        // Cenário 1: O Gerente quer saber SÓ o nome e o preço.
+        System.out.println("Product: " + p1.getName());
+        System.out.println("Price: R$ " + p1.getPrice());
 
-        System.out.println("--- Quality Control Report ---");
+// Cenário 2: Chegou uma nota fiscal nova. O preço subiu.
+// Não podemos fazer p1.price = 12.00 (Proibido/Private)
+// Usamos o Setter:
+        p1.setPrice(-50.00);
 
-        // Lógica de Decisão
-        if (quantity < minimumStock) {
-            System.out.println("CRITICAL: Stock is low! Replenish immediately.");
-        } else {
-            System.out.println("STATUS: Stock levels are normal.");
-        }
-
-        // AGORA: O Gerente apenas "chama" o departamento, ele não faz o trabalho.
-        runAudit();
-        runAudit();
-
+        System.out.println("New Price Updated: R$ " + p1.getPrice());
     }
-
-    // --- O DEPARTAMENTO (Procedimento Isolado) ---
-    // public: qualquer um vê
-    // static: pertence à fábrica (classe)
-    // void: não devolve troco, só trabalha
-    public static void runAudit() {
-        System.out.println("\n--- Starting Automatic Audit ---");
-        for (int i = 1; i <= 5; i++) {
-            System.out.println("Scanning Pallet ID: #" + i + " [OK]");
-        }
-        System.out.println("Audit Finished.");
-    }
-
 }
