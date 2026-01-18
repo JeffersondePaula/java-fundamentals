@@ -1,58 +1,60 @@
+import java.util.Scanner;
 
 public class Main {
 
+
     public static void main(String[] args) {
-        // 1. Ferramentas (Scanner e Lista)
-        // System.in = Teclado
-        java.util.Scanner scanner = new java.util.Scanner(System.in);
-        java.util.List<Product> warehouse = new java.util.ArrayList<>();
+        ProductRepository repo = new ProductRepository();
+        Scanner scanner = new Scanner(System.in);
+        int opcao = 0;
 
-        System.out.println("--- SYSTEM ONLINE: WAITING FOR INPUT ---");
+        System.out.println("=== 🏭 SISTEMA DE WMS (ESTOQUE) vFINAL ===");
 
-        // 2. O Loop Infinito (O Menu)
-        while (true) {
-            System.out.println("\nOptions: [1] Register Product  [2] Finish & Print Report");
-            System.out.print("Choose an option: ");
+        while (opcao != 5) { // Agora vai até 5
+            System.out.println("\n--------------------------------");
+            System.out.println("1 - 📦 Listar Produtos");
+            System.out.println("2 - ➕ Cadastrar Novo");
+            System.out.println("3 - ✏️ Atualizar Preço/Qtd");
+            System.out.println("4 - 🗑️ Deletar Produto");
+            System.out.println("5 - 🚪 Sair");
+            System.out.print("Escolha: ");
 
-            int option = scanner.nextInt();
-            scanner.nextLine(); // <--- O TRUQUE DO FANTASMA (Limpa o "Enter" que sobrou na memória)
+            opcao = scanner.nextInt();
+            scanner.nextLine(); // Limpar buffer
 
-            if (option == 2) {
-                break; // QUEBRA O LOOP. Sai do while e vai para o relatório.
-            }
-
-            if (option == 1) {
-                // Coletando dados reais do usuário
-                System.out.print("Product Name: ");
-                String name = scanner.nextLine(); // Lê a linha inteira (aceita espaços)
-
-                System.out.print("Price (use comma or dot depending on PC): ");
-                double price = scanner.nextDouble();
-
-                System.out.print("Quantity: ");
-                int quantity = scanner.nextInt();
-
-                // Criando e adicionando
-                Product newProduct = new Product(name, price, quantity);
-                warehouse.add(newProduct);
-
-                System.out.println(" >> Product registered successfully!");
+            switch (opcao) {
+                case 1:
+                    repo.carregarProdutos();
+                    break;
+                case 2:
+                    System.out.print("Nome: ");
+                    String nome = scanner.nextLine();
+                    System.out.print("Preço: ");
+                    double preco = scanner.nextDouble();
+                    System.out.print("Qtd: ");
+                    int qtd = scanner.nextInt();
+                    repo.adicionarProduto(nome, preco, qtd);
+                    break;
+                case 3:
+                    System.out.print("Digite o ID do produto para editar: ");
+                    int idEdit = scanner.nextInt();
+                    System.out.print("Novo Preço: ");
+                    double novoPreco = scanner.nextDouble();
+                    System.out.print("Nova Quantidade: ");
+                    int novaQtd = scanner.nextInt();
+                    repo.atualizarProduto(idEdit, novoPreco, novaQtd);
+                    break;
+                case 4:
+                    System.out.print("Digite o ID do produto para EXCLUIR: ");
+                    int idDel = scanner.nextInt();
+                    repo.deletarProduto(idDel);
+                    break;
+                case 5:
+                    System.out.println("Encerrando sistema... Sucesso! 🚀");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
             }
         }
-
-        // 3. O Relatório Final (Sua tabela bonita)
-        System.out.println("\n--- FINAL INVENTORY REPORT ---");
-        System.out.printf("%-30s | %-10s | %-10s%n", "PRODUCT NAME", "PRICE", "STOCK");
-        System.out.println("----------------------------------------------------------------");
-
-        for (Product p : warehouse) {
-            System.out.printf("%-30s | R$ %-7.2f | %-5d units", p.getName(), p.getPrice(), p.getQuantityInStock());
-            if (p.getQuantityInStock() < 500) {
-                System.out.print("  <-- [LOW STOCK WARNING]");
-            }
-            System.out.println();
-        }
-
-        scanner.close(); // Boa prática: fechar o scanner no fim
     }
 }
